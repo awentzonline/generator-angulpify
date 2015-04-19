@@ -128,6 +128,9 @@ var AngulpifyGenerator = module.exports = yeoman.generators.Base.extend({
       this.includeUIBootstrap = hasFeature('includeUIBootstrap');
       this.includeUIRouter = hasFeature('includeUIRouter');
 
+      // TODO: UI
+      this.includeKarma = true;
+
       done();
     }.bind(this));
   },
@@ -144,7 +147,8 @@ var AngulpifyGenerator = module.exports = yeoman.generators.Base.extend({
       includeHtml: this.includeHtml,
       includeBootstrap: this.includeBootstrap,
       includeUIBootstrap: this.includeUIBootstrap,
-      includeUIRouter: this.includeUIRouter
+      includeUIRouter: this.includeUIRouter,
+      includeKarma: this.includeKarma
     });
 
     this.copy('editorconfig', '.editorconfig');
@@ -154,6 +158,9 @@ var AngulpifyGenerator = module.exports = yeoman.generators.Base.extend({
       this.copy('_coffeelint.json', 'coffeelint.json');
     } else if (this.includeTypeScript) {
       this.copy('_tslint.json', 'tslint.json');
+    }
+    if (this.includeKarma) {
+      this.copy('_karma.conf.js', 'karma.conf.js');
     }
   },
   writing: {
@@ -166,7 +173,7 @@ var AngulpifyGenerator = module.exports = yeoman.generators.Base.extend({
         name: this.appname,
         private: true,
         dependencies: {
-          angular: '~1.2.21'
+          angular: '~1.3.15'
         }
       };
       if (this.includeBootstrap) bower.dependencies['bootstrap'+(this.includeSass ? '-sass-official' : '')] = '~3.2.0';
@@ -175,6 +182,9 @@ var AngulpifyGenerator = module.exports = yeoman.generators.Base.extend({
         bower.dependencies['angular-ui-router'] = '~0.2.10';
       } else {
         bower.dependencies['angular-route'] = '~1.2.21';
+      }
+      if (this.includeKarma) {
+        bower.dependencies['angular-mocks'] = '~1.3.15';
       }
       this.write('bower.json', JSON.stringify(bower, null, 2));
     },
