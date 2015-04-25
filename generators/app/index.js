@@ -89,17 +89,22 @@ var AngulpifyGenerator = module.exports = yeoman.generators.Base.extend({
           {
             name: 'Bootstrap',
             value: 'includeBootstrap',
-            checked: true
+            checked: false
+          },
+          {
+            name: 'AngularJS',
+            value: 'includeAngular',
+            checked: false
           },
           {
             name: 'UI Bootstrap',
             value: 'includeUIBootstrap',
-            checked: true
+            checked: false
           },
           {
             name: 'UI Router',
             value: 'includeUIRouter',
-            checked: true
+            checked: false
           }
         ]
       }
@@ -125,6 +130,7 @@ var AngulpifyGenerator = module.exports = yeoman.generators.Base.extend({
       this.includeHtml = hasFeature('includeHtml');
 
       this.includeBootstrap = hasFeature('includeBootstrap');
+      this.includeAngular = hasFeature('includeAngular');
       this.includeUIBootstrap = hasFeature('includeUIBootstrap');
       this.includeUIRouter = hasFeature('includeUIRouter');
 
@@ -146,6 +152,7 @@ var AngulpifyGenerator = module.exports = yeoman.generators.Base.extend({
       includeJade: this.includeJade,
       includeHtml: this.includeHtml,
       includeBootstrap: this.includeBootstrap,
+      includeAngular: this.includeAngular,
       includeUIBootstrap: this.includeUIBootstrap,
       includeUIRouter: this.includeUIRouter,
       includeKarma: this.includeKarma
@@ -173,18 +180,20 @@ var AngulpifyGenerator = module.exports = yeoman.generators.Base.extend({
         name: this.appname,
         private: true,
         dependencies: {
-          angular: '~1.3.15'
         }
       };
+      if (this.includeAngular) bower.dependencies['angular'] = '~1.3.15';
       if (this.includeBootstrap) bower.dependencies['bootstrap'+(this.includeSass ? '-sass-official' : '')] = '~3.2.0';
       if (this.includeUIBootstrap) bower.dependencies['angular-bootstrap'] = '~0.11.0';
-      if (this.includeUIRouter) {
-        bower.dependencies['angular-ui-router'] = '~0.2.10';
-      } else {
-        bower.dependencies['angular-route'] = '~1.2.21';
-      }
-      if (this.includeKarma) {
-        bower.dependencies['angular-mocks'] = '~1.3.15';
+      if (this.includeAngular) {
+        if (this.includeUIRouter) {
+          bower.dependencies['angular-ui-router'] = '~0.2.10';
+        } else {
+          bower.dependencies['angular-route'] = '~1.2.21';
+        }
+        if (this.includeKarma) {
+          bower.dependencies['angular-mocks'] = '~1.3.15';
+        }
       }
       this.write('bower.json', JSON.stringify(bower, null, 2));
     },
