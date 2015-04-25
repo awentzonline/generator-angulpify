@@ -9,7 +9,7 @@ global.config = {
       index: SRC_FOLDER + '/index.<% if (includeJade) { %>jade<% } else { %>html<% } %>',
       assets: [SRC_FOLDER + '/assets/**/*', '!' + SRC_FOLDER + '/assets/images/**/*'],
       images: SRC_FOLDER + '/assets/images/**/*',
-      scripts: SRC_FOLDER + '/modules/**/*.<% if (includeCoffeeScript) { %>coffee<% } else if (includeTypeScript) { %>ts<% } else { %>js<% } %>',
+      scripts: SRC_FOLDER + '/modules/**/*(!spec).<% if (includeCoffeeScript) { %>coffee<% } else if (includeTypeScript) { %>ts<% } else { %>js<% } %>',
       styles: SRC_FOLDER + '/styles/app.<% if (includeLess) { %>less<% } else if (includeSass) { %>scss<% } else { %>css<% } %>',
       stylesGlob: SRC_FOLDER + '/styles/**/*.<% if (includeLess) { %>less<% } else if (includeSass) { %>scss<% } else { %>css<% } %>',
       templates: SRC_FOLDER + '/modules/**/*.<% if (includeJade) { %>jade<% } else { %>html<% } %>',
